@@ -1,0 +1,789 @@
+{
+	"info": {
+		"_postman_id": "8a032888-9a0f-4107-8526-088ee8eb40e4",
+		"name": "Airline-Airports",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12859908"
+	},
+	"item": [
+		{
+			"name": "Crear una aerolínea válida",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"   const responseData = pm.response.json();",
+							"    pm.environment.set(\"aerolineaId\", responseData.id);",
+							"   "
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"Avianca\",\n  \"descripcion\": \"Aerolinea colombiana\",\n  \"fechaFundacion\": \"2020-01-01\",\n  \"paginaWeb\": \"Avianca.com\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/airlines",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear un aeropuerto válido.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseData = pm.response.json();",
+							"pm.environment.set(\"aeropuertoId\", responseData.id);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"Aeropuerto El Dorado\",\n  \"codigo\": \"BOG\",\n  \"pais\": \"Colombia\",\n  \"ciudad\": \"Bogotá\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/airports",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airports"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear un aeropuerto válido 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseData = pm.response.json();",
+							"pm.environment.set(\"aeropuertoId2\", responseData.id);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"Aeropuerto El Dorado\",\n  \"codigo\": \"BOG\",\n  \"pais\": \"Colombia\",\n  \"ciudad\": \"Bogotá\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/airports",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airports"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear un aeropuerto válido 3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseData = pm.response.json();",
+							"pm.environment.set(\"aeropuertoId3\", responseData.id);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"Aeropuerto El Dorado\",\n  \"codigo\": \"BOG\",\n  \"pais\": \"Colombia\",\n  \"ciudad\": \"Bogotá\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/airports",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airports"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Asociar un aeropuerto a una aerolínea.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 201\", function () { pm.response.to.have.status(201); });",
+							"pm.test(\"Estructura y datos\", function () {",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.aeropuertos).to.be.an('array').that.is.not.empty;",
+							"    pm.expect(responseJson.aeropuertos[responseJson.aeropuertos.length - 1].id).to.eql(pm.environment.get(\"aeropuertoId\")); ",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airlines/{{aerolineaId}}/airports/{{aeropuertoId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines",
+						"{{aerolineaId}}",
+						"airports",
+						"{{aeropuertoId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Asociar un aeropuerto a una aerolínea.",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/airlines/{{aerolineaId}}/airports/{{aeropuertoId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airlines",
+								"{{aerolineaId}}",
+								"airports",
+								"{{aeropuertoId}}"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"id\": \"e195a398-5f55-478d-aa6a-bce53664b51a\",\n    \"nombre\": \"Avianca\",\n    \"descripcion\": \"Aerolinea colombiana\",\n    \"fechaFundacion\": \"2020-01-01T05:00:00.000Z\",\n    \"paginaWeb\": \"Avianca.com\",\n    \"aeropuertos\": [\n        {\n            \"id\": \"00457d3d-d91d-4e84-8c20-697b1d06ebb6\",\n            \"nombre\": \"Aeropuerto El Dorado\",\n            \"codigo\": \"BOG\",\n            \"pais\": \"Colombia\",\n            \"ciudad\": \"Bogotá\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Asociar un aeropuerto que no existe a una aerolínea.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"    ",
+							"});",
+							"pm.test(\"Error message\", function () {",
+							"   const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.have.property('message');",
+							"    pm.expect(responseData.message).to.equal('El aeropuerto con el id proporcionado no fue encontrado.');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airlines/{{aerolineaId}}/airports/00000000-0000-0000-0000-000000000000",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines",
+						"{{aerolineaId}}",
+						"airports",
+						"00000000-0000-0000-0000-000000000000"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Asociar un aeropuerto que no existe a una aerolínea.",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/airlines/{{aerolineaId}}/airports/00000000-0000-0000-0000-000000000000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airlines",
+								"{{aerolineaId}}",
+								"airports",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"El aeropuerto con el id proporcionado no fue encontrado.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener todos los aeropuertos que cubre una aerolínea.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+							"pm.test(\"Estructura de array\", function () {",
+							"    const data = pm.response.json();",
+							"    pm.expect(data).to.be.an('array');",
+							"    data.forEach(airport => {",
+							"        pm.expect(airport).to.have.property('id');",
+							"        pm.expect(airport).to.have.property('nombre');",
+							"        pm.expect(airport).to.have.property('codigo');",
+							"        pm.expect(airport).to.have.property('pais');",
+							"        pm.expect(airport).to.have.property('ciudad');",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airlines/{{aerolineaId}}/airports",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines",
+						"{{aerolineaId}}",
+						"airports"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener todos los aeropuertos que cubre una aerolínea.",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/airlines/{{aerolineaId}}/airports",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airlines",
+								"{{aerolineaId}}",
+								"airports"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"0bac81be-c6a1-467f-96de-8450ea373bb1\",\n        \"nombre\": \"Aeropuerto El Dorado\",\n        \"codigo\": \"BOG\",\n        \"pais\": \"Colombia\",\n        \"ciudad\": \"Bogotá\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Obtener un aeropuerto asociado a una aerolínea.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+							"pm.test(\"Estructura del objeto\", function () {",
+							"    const airport = pm.response.json();",
+							"    pm.expect(airport).to.have.property('id');",
+							"    pm.expect(airport).to.have.property('nombre');",
+							"    pm.expect(airport).to.have.property('codigo');",
+							"    pm.expect(airport).to.have.property('pais');",
+							"    pm.expect(airport).to.have.property('ciudad');",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airlines/{{aerolineaId}}/airports/{{aeropuertoId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines",
+						"{{aerolineaId}}",
+						"airports",
+						"{{aeropuertoId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener un aeropuerto asociado a una aerolínea.",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/airlines/{{aerolineaId}}/airports/{{aeropuertoId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airlines",
+								"{{aerolineaId}}",
+								"airports",
+								"{{aeropuertoId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"id\": \"0bac81be-c6a1-467f-96de-8450ea373bb1\",\n    \"nombre\": \"Aeropuerto El Dorado\",\n    \"codigo\": \"BOG\",\n    \"pais\": \"Colombia\",\n    \"ciudad\": \"Bogotá\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener un aeropuerto que no esté asociado a una aerolínea.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 412\", function () {",
+							"    pm.response.to.have.status(412);",
+							"});",
+							"pm.test(\"Error message\", function () {",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.message).to.include(\"El aeropuerto con el id proporcionado no está asociado a la aerolínea.\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airlines/{{aerolineaId}}/airports/{{aeropuertoId2}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines",
+						"{{aerolineaId}}",
+						"airports",
+						"{{aeropuertoId2}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener un aeropuerto que no esté asociado a una aerolínea.",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/airlines/{{aerolineaId}}/airports/{{aeropuertoId2}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airlines",
+								"{{aerolineaId}}",
+								"airports",
+								"{{aeropuertoId2}}"
+							]
+						}
+					},
+					"status": "Precondition Failed",
+					"code": 412,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 412,\n    \"message\": \"El aeropuerto con el id proporcionado no está asociado a la aerolínea.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar los aeropuertos que están asociados a una aerolínea.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Eestructura y datos\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.aeropuertos).to.be.an(\"array\");",
+							"    pm.expect(jsonData.aeropuertos.length).to.eql(2);",
+							"    jsonData.aeropuertos.forEach(aeropuerto => {",
+							"        pm.expect(aeropuerto).to.have.property(\"id\");",
+							"    });",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n  {\"id\": \"{{aeropuertoId}}\"},\n  {\"id\": \"{{aeropuertoId2}}\"}\n]"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/airlines/{{aerolineaId}}/airports",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines",
+						"{{aerolineaId}}",
+						"airports"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Actualizar los aeropuertos que están asociados a una aerolínea.",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\"id\": \"{{aeropuertoId}}\"},\n  {\"id\": \"{{aeropuertoId2}}\"}\n]"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/airlines/{{aerolineaId}}/airports",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airlines",
+								"{{aerolineaId}}",
+								"airports"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"id\": \"750fba94-b37f-4df3-a851-b92aa9a448a6\",\n    \"nombre\": \"Avianca\",\n    \"descripcion\": \"Aerolinea colombiana\",\n    \"fechaFundacion\": \"2020-01-01T05:00:00.000Z\",\n    \"paginaWeb\": \"Avianca.com\",\n    \"aeropuertos\": [\n        {\n            \"id\": \"0bac81be-c6a1-467f-96de-8450ea373bb1\"\n        },\n        {\n            \"id\": \"8771fb62-a27b-459a-b64a-0078042c3c01\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar los aeropuertos asociados a una aerolínea, con un aeropuerto inexistente.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"    ",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n  {\"id\": \"00000000-0000-0000-0000-000000000000\"}\n]"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/airlines/{{aerolineaId}}/airports",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines",
+						"{{aerolineaId}}",
+						"airports"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Actualizar los aeropuertos asociados a una aerolínea, con un aeropuerto inexistente.",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\"id\": \"00000000-0000-0000-0000-000000000000\"}\n]"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/airlines/{{aerolineaId}}/airports",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airlines",
+								"{{aerolineaId}}",
+								"airports"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"El aeropuerto con id 00000000-0000-0000-0000-000000000000 no fue encontrado.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Eliminar un aeropuerto previamente asociado a una aerolínea.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"    ",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airlines/{{aerolineaId}}/airports/{{aeropuertoId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines",
+						"{{aerolineaId}}",
+						"airports",
+						"{{aeropuertoId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Eliminar un aeropuerto previamente asociado a una aerolínea.",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/airlines/{{aerolineaId}}/airports/{{aeropuertoId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airlines",
+								"{{aerolineaId}}",
+								"airports",
+								"{{aeropuertoId}}"
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Eliminar un aeropuerto que no estaba previamente asociado a una aerolínea.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 412\", function () {",
+							"    pm.response.to.have.status(412);",
+							"    ",
+							"});",
+							"pm.test(\"Error message\", function () {",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.message).to.include(\"El aeropuerto con el id proporcionado no está asociado a la aerolínea.\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airlines/{{aerolineaId}}/airports/{{aeropuertoId3}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines",
+						"{{aerolineaId}}",
+						"airports",
+						"{{aeropuertoId3}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Eliminar un aeropuerto que no estaba previamente asociado a una aerolínea.",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/airlines/{{aerolineaId}}/airports/{{aeropuertoId3}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airlines",
+								"{{aerolineaId}}",
+								"airports",
+								"{{aeropuertoId3}}"
+							]
+						}
+					},
+					"status": "Precondition Failed",
+					"code": 412,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 412,\n    \"message\": \"El aeropuerto con el id proporcionado no está asociado a la aerolínea.\"\n}"
+				}
+			]
+		}
+	]
+}

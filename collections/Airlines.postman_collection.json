@@ -1,0 +1,664 @@
+{
+	"info": {
+		"_postman_id": "a9d90c17-9dff-4969-8a74-f1ebe2e33e32",
+		"name": "Airlines",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12859908"
+	},
+	"item": [
+		{
+			"name": "Crear una aerolínea válida",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"   const responseData = pm.response.json();",
+							"    pm.environment.set(\"aerolineaId\", responseData.id);",
+							"    pm.test(\"Status 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"    ",
+							"});",
+							"pm.test(\"Estructura y datos\", function () {",
+							"    pm.expect(responseData).to.have.property('id');",
+							"    pm.expect(responseData).to.have.property('nombre');",
+							"    pm.expect(responseData).to.have.property('descripcion');",
+							"    pm.expect(responseData).to.have.property('fechaFundacion');",
+							"    pm.expect(responseData).to.have.property('paginaWeb');",
+							"    ",
+							"    ",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"Avianca\",\n  \"descripcion\": \"Aerolinea colombiana\",\n  \"fechaFundacion\": \"2020-01-01\",\n  \"paginaWeb\": \"Avianca.com\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/airlines",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Crear una aerolínea válida",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Avianca\",\n  \"descripcion\": \"Aerolinea colombiana\",\n  \"fechaFundacion\": \"2020-01-01\",\n  \"paginaWeb\": \"Avianca.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/airlines",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airlines"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"id\": \"4abac9e3-047f-43bf-9a07-cbb1fcb85ac5\",\n    \"nombre\": \"Avianca\",\n    \"descripcion\": \"Aerolinea colombiana\",\n    \"fechaFundacion\": \"2020-01-01\",\n    \"paginaWeb\": \"Avianca.com\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Crear una aerolínea inválida",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"    pm.test(\"Status 412\", function () {",
+							"    pm.response.to.have.status(412);",
+							"    ",
+							"});pm.test(\"Error message\", function () {",
+							"   const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.have.property('message');",
+							"    pm.expect(responseData.message).to.equal('La fecha de fundación debe ser una fecha en el pasado.');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"Avianca\",\n  \"descripcion\": \"Aerolinea colombiana\",\n  \"fechaFundacion\": \"2026-01-01\",\n  \"paginaWeb\": \"Avianca.com\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/airlines",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Crear una aerolínea válida",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Avianca\",\n  \"descripcion\": \"Aerolinea colombiana\",\n  \"fechaFundacion\": \"2026-01-01\",\n  \"paginaWeb\": \"Avianca.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/airlines",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airlines"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 412,\n    \"message\": \"La fecha de fundación debe ser una fecha en el pasado.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener todas las aerolíneas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"}); ",
+							"pm.test(\"Estructura y datos\", function () {",
+							"pm.expect(pm.response.json()).to.be.an('array');",
+							"",
+							"    pm.response.json().forEach(function (item) {",
+							"        pm.expect(item).to.have.property('id');",
+							"        pm.expect(item).to.have.property('nombre');",
+							"        pm.expect(item).to.have.property('descripcion');",
+							"        pm.expect(item).to.have.property('fechaFundacion');",
+							"        pm.expect(item).to.have.property('paginaWeb');",
+							"        ",
+							"        pm.expect(item.aeropuertos).to.be.an('array');});",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airlines",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener todas las aerolíneas",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/airlines",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airlines"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"4abac9e3-047f-43bf-9a07-cbb1fcb85ac5\",\n        \"nombre\": \"Avianca\",\n        \"descripcion\": \"Aerolinea colombiana\",\n        \"fechaFundacion\": \"2020-01-01T05:00:00.000Z\",\n        \"paginaWeb\": \"Avianca.com\",\n        \"aeropuertos\": []\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Obtener una aerolínea por ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Estructura y datos\", function () {",
+							"   const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.have.property('id');",
+							"    pm.expect(responseData).to.have.property('nombre');",
+							"    pm.expect(responseData).to.have.property('descripcion');",
+							"    pm.expect(responseData).to.have.property('fechaFundacion');",
+							"    pm.expect(responseData).to.have.property('paginaWeb');",
+							"        pm.expect(responseData.aeropuertos).to.be.an('array');",
+							"    ",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airlines/{{aerolineaId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines",
+						"{{aerolineaId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener una aerolínea por ID",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/airlines/{{aerolineaId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airlines",
+								"{{aerolineaId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"id\": \"42193029-750f-494c-856b-4072d7f3783d\",\n    \"nombre\": \"Avianca\",\n    \"descripcion\": \"Aerolinea colombiana\",\n    \"fechaFundacion\": \"2020-01-01T05:00:00.000Z\",\n    \"paginaWeb\": \"Avianca.com\",\n    \"aeropuertos\": []\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener una aerolínea por un ID que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 404\", function () {",
+							"  pm.response.to.have.status(404);",
+							"});",
+							"pm.test(\"Error message\", function () {",
+							"   const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.have.property('message');",
+							"    pm.expect(responseData.message).to.equal('La aerolínea con el id proporcionado no fue encontrada.');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airlines/00000000-0000-0000-0000-000000000000",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines",
+						"00000000-0000-0000-0000-000000000000"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener una aerolínea por un ID que no existe",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/airlines/00000000-0000-0000-0000-000000000000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airlines",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"La aerolínea con el id proporcionado no fue encontrada.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar una aerolínea.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    ",
+							"});",
+							"pm.test(\"Estructura y datos\", function () {",
+							"   const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.have.property('id');",
+							"    pm.expect(responseData).to.have.property('nombre');",
+							"    pm.expect(responseData).to.have.property('descripcion');",
+							"    pm.expect(responseData).to.have.property('fechaFundacion');",
+							"    pm.expect(responseData).to.have.property('paginaWeb');",
+							"    ",
+							"    ",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"LATAM\",\n  \"descripcion\": \"Aerolinea Sudamericana\",\n  \"fechaFundacion\": \"1998-01-01\",\n  \"paginaWeb\":\"latam.com\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/airlines/{{aerolineaId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines",
+						"{{aerolineaId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Actualizar una aerolínea.",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"LATAM\",\n  \"descripcion\": \"Aerolinea Sudamericana\",\n  \"fechaFundacion\": \"1998-01-01\",\n  \"paginaWeb\":\"latam.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/airlines/{{aerolineaId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airlines",
+								"{{aerolineaId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"id\": \"3d339804-16de-452e-8881-54b45d015bdb\",\n    \"nombre\": \"LATAM\",\n    \"descripcion\": \"Aerolinea Sudamericana\",\n    \"fechaFundacion\": \"1998-01-01\",\n    \"paginaWeb\": \"latam.com\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar una aerolínea con un ID que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"    ",
+							"});",
+							"pm.test(\"Error message\", function () {",
+							"   const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.have.property('message');",
+							"    pm.expect(responseData.message).to.equal('La aerolínea con el id proporcionado no fue encontrada.');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"LATAM\",\n  \"descripcion\": \"Aerolinea Sudamericana\",\n  \"fechaFundacion\": \"1998-01-01\",\n  \"paginaWeb\":\"latam.com\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/airlines/00000000-0000-0000-0000-000000000000",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines",
+						"00000000-0000-0000-0000-000000000000"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Actualizar una aerolínea con un ID que no existe",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"LATAM\",\n  \"descripcion\": \"Aerolinea Sudamericana\",\n  \"fechaFundacion\": \"1998-01-01\",\n  \"paginaWeb\":\"latam.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/airlines/00000000-0000-0000-0000-000000000000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airlines",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"La aerolínea con el id proporcionado no fue encontrada.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Eliminar una aerolínea por su ID.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"    ",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airlines/{{aerolineaId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines",
+						"{{aerolineaId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Eliminar una aerolínea por su ID.",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/airlines/{{aerolineaId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airlines",
+								"{{aerolineaId}}"
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Eliminar una aerolínea con un ID que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"    ",
+							"});",
+							"pm.test(\"Error message\", function () {",
+							"   const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.have.property('message');",
+							"    pm.expect(responseData.message).to.equal('La aerolínea con el id proporcionado no fue encontrada.');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airlines/00000000-0000-0000-0000-000000000000",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airlines",
+						"00000000-0000-0000-0000-000000000000"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Eliminar una aerolínea con un ID que no existe",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/airlines/00000000-0000-0000-0000-000000000000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airlines",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"La aerolínea con el id proporcionado no fue encontrada.\"\n}"
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,639 @@
+{
+	"info": {
+		"_postman_id": "20da7bd7-2c47-4443-89c7-07b605169042",
+		"name": "Airports",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12859908"
+	},
+	"item": [
+		{
+			"name": "Crear un aeropuerto válido.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseData = pm.response.json();",
+							"pm.environment.set(\"aeropuertoId\", responseData.id);",
+							"pm.test(\"Status 201\", function () { pm.response.to.have.status(201); });",
+							"pm.test(\"Estructura y datos\", function () {",
+							"    pm.expect(responseData).to.have.property('id');",
+							"    pm.expect(responseData).to.have.property('nombre');",
+							"    pm.expect(responseData).to.have.property('codigo');",
+							"    pm.expect(responseData).to.have.property('pais');",
+							"    pm.expect(responseData).to.have.property('ciudad');",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"Aeropuerto El Dorado\",\n  \"codigo\": \"BOG\",\n  \"pais\": \"Colombia\",\n  \"ciudad\": \"Bogotá\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/airports",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airports"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Crear un aeropuerto válido.",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Aeropuerto El Dorado\",\n  \"codigo\": \"BOG\",\n  \"pais\": \"Colombia\",\n  \"ciudad\": \"Bogotá\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/airports",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airports"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"id\": \"b495ee23-ea45-4122-8474-8ea802f342aa\",\n    \"nombre\": \"Aeropuerto El Dorado\",\n    \"codigo\": \"BOG\",\n    \"pais\": \"Colombia\",\n    \"ciudad\": \"Bogotá\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Crear un aeropuerto inválido.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"Status 412\", function () { pm.response.to.have.status(412); });",
+							"pm.test(\"Error message\", function () {",
+							"   const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.have.property('message');",
+							"    pm.expect(responseData.message).to.equal('El código del aeropuerto debe tener exactamente tres caracteres.');",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"Aeropuerto El Dorado\",\n  \"codigo\": \"BOGOTA\",\n  \"pais\": \"Colombia\",\n  \"ciudad\": \"Bogotá\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/airports",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airports"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Crear un aeropuerto inválido.",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Aeropuerto El Dorado\",\n  \"codigo\": \"BOGOTA\",\n  \"pais\": \"Colombia\",\n  \"ciudad\": \"Bogotá\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/airports",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airports"
+							]
+						}
+					},
+					"status": "Precondition Failed",
+					"code": 412,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 412,\n    \"message\": \"El código del aeropuerto debe tener exactamente tres caracteres.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener todos los aeropuertos.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+							"pm.test(\"Estructura de array\", function () {",
+							"    const data = pm.response.json();",
+							"    pm.expect(data).to.be.an('array');",
+							"    data.forEach(airport => {",
+							"        pm.expect(airport).to.have.property('id');",
+							"        pm.expect(airport).to.have.property('nombre');",
+							"        pm.expect(airport).to.have.property('codigo');",
+							"        pm.expect(airport).to.have.property('pais');",
+							"        pm.expect(airport).to.have.property('ciudad');",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airports",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airports"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener todos los aeropuertos.",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/airports",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airports"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"2a5d697b-f667-40a6-a2a1-5586b6bd53d9\",\n        \"nombre\": \"Aeropuerto El Dorado\",\n        \"codigo\": \"BOG\",\n        \"pais\": \"Colombia\",\n        \"ciudad\": \"Bogotá\",\n        \"aerolineas\": []\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Obtener un aeropuerto por ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+							"pm.test(\"Estructura del objeto\", function () {",
+							"    const airport = pm.response.json();",
+							"    pm.expect(airport).to.have.property('id');",
+							"    pm.expect(airport).to.have.property('nombre');",
+							"    pm.expect(airport).to.have.property('codigo');",
+							"    pm.expect(airport).to.have.property('pais');",
+							"    pm.expect(airport).to.have.property('ciudad');",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airports/{{aeropuertoId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airports",
+						"{{aeropuertoId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener un aeropuerto por ID",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/airports/{{aeropuertoId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airports",
+								"{{aeropuertoId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"id\": \"2a5d697b-f667-40a6-a2a1-5586b6bd53d9\",\n    \"nombre\": \"Aeropuerto El Dorado\",\n    \"codigo\": \"BOG\",\n    \"pais\": \"Colombia\",\n    \"ciudad\": \"Bogotá\",\n    \"aerolineas\": []\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener un aeropuerto por un ID que no existe.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"    ",
+							"});",
+							"pm.test(\"Error message\", function () {",
+							"   const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.have.property('message');",
+							"    pm.expect(responseData.message).to.equal('El aeropuerto con el id proporcionado no fue encontrado.');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airports/00000000-0000-0000-0000-000000000000",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airports",
+						"00000000-0000-0000-0000-000000000000"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Obtener un aeropuerto por un ID que no existe.",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/airports/00000000-0000-0000-0000-000000000000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airports",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"El aeropuerto con el id proporcionado no fue encontrado.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar un aeropuerto.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseData = pm.response.json();",
+							"pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+							"pm.test(\"Estructura y datos\", function () {",
+							"    pm.expect(responseData).to.have.property('id');",
+							"    pm.expect(responseData).to.have.property('nombre');",
+							"    pm.expect(responseData).to.have.property('codigo');",
+							"    pm.expect(responseData).to.have.property('pais');",
+							"    pm.expect(responseData).to.have.property('ciudad');",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"Aeropuerto Jorge Chávez\",\n  \"codigo\": \"LIM\",\n  \"pais\": \"Perú\",\n  \"ciudad\": \"Lima\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/airports/{{aeropuertoId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airports",
+						"{{aeropuertoId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Actualizar un aeropuerto.",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Aeropuerto Jorge Chávez\",\n  \"codigo\": \"LIM\",\n  \"pais\": \"Perú\",\n  \"ciudad\": \"Lima\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/airports/{{aeropuertoId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airports",
+								"{{aeropuertoId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"id\": \"c2fbcd2f-db99-490e-8786-9f2a22a71b74\",\n    \"nombre\": \"Aeropuerto Jorge Chávez\",\n    \"codigo\": \"LIM\",\n    \"pais\": \"Perú\",\n    \"ciudad\": \"Lima\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Actualizar un aeropuerto con un ID que no existe.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"    ",
+							"});",
+							"pm.test(\"Error message\", function () {",
+							"   const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.have.property('message');",
+							"    pm.expect(responseData.message).to.equal('El aeropuerto con el id proporcionado no fue encontrado.');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"Aeropuerto Jorge Chávez\",\n  \"codigo\": \"LIM\",\n  \"pais\": \"Perú\",\n  \"ciudad\": \"Lima\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/airports/00000000-0000-0000-0000-000000000000",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airports",
+						"00000000-0000-0000-0000-000000000000"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Actualizar un aeropuerto con un ID que no existe.",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Aeropuerto Jorge Chávez\",\n  \"codigo\": \"LIM\",\n  \"pais\": \"Perú\",\n  \"ciudad\": \"Lima\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/airports/00000000-0000-0000-0000-000000000000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airports",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"El aeropuerto con el id proporcionado no fue encontrado.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Eliminar un aeropuerto por su ID.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"    ",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airports/{{aeropuertoId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airports",
+						"{{aeropuertoId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Eliminar un aeropuerto por su ID.",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/airports/{{aeropuertoId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airports",
+								"{{aeropuertoId}}"
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Eliminar un aeropuerto con un ID que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"    ",
+							"});",
+							"pm.test(\"Error message\", function () {",
+							"   const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.have.property('message');",
+							"    pm.expect(responseData.message).to.equal('El aeropuerto con el id proporcionado no fue encontrado.');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/airports/00000000-0000-0000-0000-000000000000",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"airports",
+						"00000000-0000-0000-0000-000000000000"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Eliminar un aeropuerto con un ID que no existe",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/airports/00000000-0000-0000-0000-000000000000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"airports",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"statusCode\": 404,\n    \"message\": \"El aeropuerto con el id proporcionado no fue encontrado.\"\n}"
+				}
+			]
+		}
+	]
+}
